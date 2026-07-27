@@ -6,19 +6,6 @@ labels: []
 assignees: []
 ---
 
-## Metadata
-
-<!-- Machine-readable metadata for RAG indexing. Fill in all applicable fields. -->
-
-| Field        | Value                        |
-| ------------ | ---------------------------- |
-| **Type**     | `feature | bug | docs | refactor | infra` |
-| **Priority** | `critical | high | medium | low` |
-| **Area**     | _e.g. ingestion, embeddings, API, UI, auth, infra_ |
-| **Status**   | `backlog | todo | in-progress | review | done` |
-
----
-
 ## Summary
 
 <!-- One-paragraph description. This is the primary text RAG will match on. Be specific: include WHAT and WHY. -->
