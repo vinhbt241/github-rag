@@ -338,6 +338,13 @@ CREATE INDEX index_chunks_on_chunkable_type_and_chunkable_id ON public.chunks US
 
 
 --
+-- Name: index_chunks_on_parent_and_source; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_chunks_on_parent_and_source ON public.chunks USING btree (chunkable_type, chunkable_id, chunk_type, source_github_id);
+
+
+--
 -- Name: index_chunks_on_project; Type: INDEX; Schema: public; Owner: -
 --
 

@@ -35,6 +35,13 @@ class CreateChunks < ActiveRecord::Migration[8.1]
     # Lookup chunks by parent
     add_index :chunks, [:chunkable_type, :chunkable_id]
 
+    # Prevent duplicate chunks for the same parent/comment on re-sync.
+    # Note: source_github_id is NULL for body chunks. PostgreSQL treats NULLs as
+    # distinct in unique indexes, so body-chunk dedup is handled at the app level.
+    # Comment chunks (source_github_id IS NOT NULL) are fully protected here.
+    add_index :chunks, [:chunkable_type, :chunkable_id, :chunk_type, :source_github_id],
+              unique: true, name: 'index_chunks_on_parent_and_source'
+
     # Access filtering
     add_index :chunks, :repository
     add_index :chunks, :project

@@ -33,6 +33,7 @@ RSpec.describe Chunk, type: :model do
 
   describe 'indexes' do
     it { is_expected.to have_db_index([:chunkable_type, :chunkable_id]) }
+    it { is_expected.to have_db_index([:chunkable_type, :chunkable_id, :chunk_type, :source_github_id]).unique(true) }
     it { is_expected.to have_db_index(:repository) }
     it { is_expected.to have_db_index(:project) }
 
@@ -183,6 +184,21 @@ RSpec.describe Chunk, type: :model do
     it 'rejects chunk without a chunkable parent' do
       chunk = build(:chunk, chunkable: nil)
       expect(chunk).not_to be_valid
+    end
+
+    it 'rejects duplicate comment chunks for the same parent' do
+      pr = create(:pull_request)
+      create(:chunk, :comment, chunkable: pr, source_github_id: 12345)
+      duplicate = build(:chunk, :comment, chunkable: pr, source_github_id: 12345)
+      expect { duplicate.save! }.to raise_error(ActiveRecord::RecordNotUnique)
+    end
+
+    it 'allows multiple body chunks for the same parent (NULL source_github_id)' do
+      pr = create(:pull_request)
+      create(:chunk, chunkable: pr, source_github_id: nil)
+      second = build(:chunk, chunkable: pr, source_github_id: nil)
+      # PostgreSQL treats NULLs as distinct in unique indexes
+      expect { second.save! }.not_to raise_error
     end
   end
 end
