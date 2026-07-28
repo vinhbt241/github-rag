@@ -31,9 +31,9 @@ RSpec.describe GithubProject, type: :model do
     it { is_expected.to validate_uniqueness_of(:github_node_id) }
   end
 
-  # NOTE: `has_many :issues` association will be tested in issue #12
-  # once the Issue model exists. The association is defined in the model
-  # but shoulda-matchers requires the target class to exist.
+  describe 'associations' do
+    it { is_expected.to have_many(:issues).dependent(:destroy) }
+  end
 
   describe 'edge cases' do
     it 'rejects duplicate github_node_id' do
