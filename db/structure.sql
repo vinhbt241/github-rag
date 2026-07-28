@@ -240,6 +240,44 @@ CREATE TABLE public.schema_migrations (
 
 
 --
+-- Name: sync_logs; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sync_logs (
+    id bigint NOT NULL,
+    syncable_type character varying NOT NULL,
+    syncable_id bigint NOT NULL,
+    started_at timestamp(6) without time zone NOT NULL,
+    finished_at timestamp(6) without time zone,
+    status character varying NOT NULL,
+    items_fetched integer DEFAULT 0,
+    items_created integer DEFAULT 0,
+    items_updated integer DEFAULT 0,
+    error_message text,
+    created_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: sync_logs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sync_logs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sync_logs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.sync_logs_id_seq OWNED BY public.sync_logs.id;
+
+
+--
 -- Name: chunks id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -272,6 +310,13 @@ ALTER TABLE ONLY public.pull_requests ALTER COLUMN id SET DEFAULT nextval('publi
 --
 
 ALTER TABLE ONLY public.repositories ALTER COLUMN id SET DEFAULT nextval('public.repositories_id_seq'::regclass);
+
+
+--
+-- Name: sync_logs id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sync_logs ALTER COLUMN id SET DEFAULT nextval('public.sync_logs_id_seq'::regclass);
 
 
 --
@@ -328,6 +373,14 @@ ALTER TABLE ONLY public.repositories
 
 ALTER TABLE ONLY public.schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: sync_logs sync_logs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sync_logs
+    ADD CONSTRAINT sync_logs_pkey PRIMARY KEY (id);
 
 
 --
@@ -443,6 +496,13 @@ CREATE UNIQUE INDEX index_repositories_on_github_id ON public.repositories USING
 
 
 --
+-- Name: index_sync_logs_on_syncable_type_and_syncable_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sync_logs_on_syncable_type_and_syncable_id ON public.sync_logs USING btree (syncable_type, syncable_id);
+
+
+--
 -- Name: issues fk_rails_5e157d96c7; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -465,6 +525,7 @@ ALTER TABLE ONLY public.pull_requests
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260728160244'),
 ('20260728154051'),
 ('20260728152317'),
 ('20260728104557'),
