@@ -10,9 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_28_100655) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_28_103204) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "github_projects", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "github_node_id", null: false
+    t.datetime "last_synced_at"
+    t.integer "number", null: false
+    t.string "owner", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.index ["github_node_id"], name: "index_github_projects_on_github_node_id", unique: true
+  end
 
   create_table "repositories", force: :cascade do |t|
     t.datetime "created_at", null: false
