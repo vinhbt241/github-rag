@@ -21,6 +21,10 @@ RSpec.describe Repository, type: :model do
     end
   end
 
+  describe 'associations' do
+    it { is_expected.to have_many(:sync_logs).dependent(:destroy) }
+  end
+
   describe 'validations' do
     subject { create(:repository) }
 
