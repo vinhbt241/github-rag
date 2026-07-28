@@ -1,5 +1,6 @@
 class PullRequest < ApplicationRecord
   belongs_to :repository
+  has_many :chunks, as: :chunkable, dependent: :destroy
 
   validates :number, presence: true, uniqueness: { scope: :repository_id }
   validates :github_id, presence: true, uniqueness: true
