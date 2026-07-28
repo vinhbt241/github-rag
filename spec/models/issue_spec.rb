@@ -55,10 +55,7 @@ RSpec.describe Issue, type: :model do
 
   describe 'associations' do
     it { is_expected.to belong_to(:github_project) }
-
-    # NOTE: `has_many :chunks, as: :chunkable` is defined in the model
-    # but cannot be tested until the chunks table exists (issue #15).
-    # shoulda-matchers requires the target table and foreign key columns.
+    it { is_expected.to have_many(:chunks).dependent(:destroy) }
   end
 
   describe 'edge cases' do
