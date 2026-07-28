@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :repository do
-    name { Faker::App.name.downcase.gsub(/\s+/, '-') }
-    full_name { "#{Faker::Internet.username(specifier: 5..10)}/#{name}" }
-    github_id { Faker::Number.unique.number(digits: 8) }
+    sequence(:name) { |n| "repo-#{n}" }
+    sequence(:full_name) { |n| "owner-#{n}/#{name}" }
+    sequence(:github_id) { |n| 100_000 + n }
     last_synced_at { nil }
   end
 end
