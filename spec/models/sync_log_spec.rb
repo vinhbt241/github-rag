@@ -46,9 +46,9 @@ RSpec.describe SyncLog, type: :model do
 
     it 'validates inclusion of syncable_type in Repository and GithubProject' do
       log = build(:sync_log)
-      log.syncable_type = ''
+      log.syncable_type = 'Issue'
       expect(log).not_to be_valid
-      expect(log.errors[:syncable_type]).to be_present
+      expect(log.errors[:syncable_type]).to include('is not included in the list')
     end
 
     it 'validates inclusion of status in running, completed, and failed' do
@@ -105,7 +105,7 @@ RSpec.describe SyncLog, type: :model do
   end
 
   describe 'edge cases' do
-    it 'rejects invalid syncable_type' do
+    it 'rejects syncable_type with blank string' do
       log = build(:sync_log)
       log.syncable_type = ''
       expect(log).not_to be_valid
