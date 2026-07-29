@@ -1,3 +1,11 @@
+--
+-- PostgreSQL database dump
+--
+
+
+-- Dumped from database version 16.14 (Ubuntu 16.14-0ubuntu0.24.04.1)
+-- Dumped by pg_dump version 16.14 (Ubuntu 16.14-0ubuntu0.24.04.1)
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -17,7 +25,7 @@ CREATE EXTENSION IF NOT EXISTS vector WITH SCHEMA public;
 
 
 --
--- Name: EXTENSION vector; Type: COMMENT; Schema: -; Owner: -
+-- Name: EXTENSION vector; Type: COMMENT; Schema: -; Owner: 
 --
 
 COMMENT ON EXTENSION vector IS 'vector data type and ivfflat and hnsw access methods';
@@ -28,7 +36,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
+-- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: vinh
 --
 
 CREATE TABLE public.ar_internal_metadata (
@@ -39,8 +47,10 @@ CREATE TABLE public.ar_internal_metadata (
 );
 
 
+ALTER TABLE public.ar_internal_metadata OWNER TO vinh;
+
 --
--- Name: chunks; Type: TABLE; Schema: public; Owner: -
+-- Name: chunks; Type: TABLE; Schema: public; Owner: vinh
 --
 
 CREATE TABLE public.chunks (
@@ -63,8 +73,10 @@ CREATE TABLE public.chunks (
 );
 
 
+ALTER TABLE public.chunks OWNER TO vinh;
+
 --
--- Name: chunks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: chunks_id_seq; Type: SEQUENCE; Schema: public; Owner: vinh
 --
 
 CREATE SEQUENCE public.chunks_id_seq
@@ -75,15 +87,60 @@ CREATE SEQUENCE public.chunks_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.chunks_id_seq OWNER TO vinh;
+
 --
--- Name: chunks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: chunks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vinh
 --
 
 ALTER SEQUENCE public.chunks_id_seq OWNED BY public.chunks.id;
 
 
 --
--- Name: github_projects; Type: TABLE; Schema: public; Owner: -
+-- Name: comments; Type: TABLE; Schema: public; Owner: vinh
+--
+
+CREATE TABLE public.comments (
+    id bigint NOT NULL,
+    commentable_type character varying NOT NULL,
+    commentable_id bigint NOT NULL,
+    github_id integer NOT NULL,
+    body text NOT NULL,
+    author character varying NOT NULL,
+    url character varying NOT NULL,
+    comment_type character varying NOT NULL,
+    github_created_at timestamp(6) without time zone NOT NULL,
+    github_updated_at timestamp(6) without time zone NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+ALTER TABLE public.comments OWNER TO vinh;
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE; Schema: public; Owner: vinh
+--
+
+CREATE SEQUENCE public.comments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.comments_id_seq OWNER TO vinh;
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vinh
+--
+
+ALTER SEQUENCE public.comments_id_seq OWNED BY public.comments.id;
+
+
+--
+-- Name: github_projects; Type: TABLE; Schema: public; Owner: vinh
 --
 
 CREATE TABLE public.github_projects (
@@ -98,8 +155,10 @@ CREATE TABLE public.github_projects (
 );
 
 
+ALTER TABLE public.github_projects OWNER TO vinh;
+
 --
--- Name: github_projects_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: github_projects_id_seq; Type: SEQUENCE; Schema: public; Owner: vinh
 --
 
 CREATE SEQUENCE public.github_projects_id_seq
@@ -110,15 +169,17 @@ CREATE SEQUENCE public.github_projects_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.github_projects_id_seq OWNER TO vinh;
+
 --
--- Name: github_projects_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: github_projects_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vinh
 --
 
 ALTER SEQUENCE public.github_projects_id_seq OWNED BY public.github_projects.id;
 
 
 --
--- Name: issues; Type: TABLE; Schema: public; Owner: -
+-- Name: issues; Type: TABLE; Schema: public; Owner: vinh
 --
 
 CREATE TABLE public.issues (
@@ -137,8 +198,10 @@ CREATE TABLE public.issues (
 );
 
 
+ALTER TABLE public.issues OWNER TO vinh;
+
 --
--- Name: issues_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: issues_id_seq; Type: SEQUENCE; Schema: public; Owner: vinh
 --
 
 CREATE SEQUENCE public.issues_id_seq
@@ -149,15 +212,17 @@ CREATE SEQUENCE public.issues_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.issues_id_seq OWNER TO vinh;
+
 --
--- Name: issues_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: issues_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vinh
 --
 
 ALTER SEQUENCE public.issues_id_seq OWNED BY public.issues.id;
 
 
 --
--- Name: pull_requests; Type: TABLE; Schema: public; Owner: -
+-- Name: pull_requests; Type: TABLE; Schema: public; Owner: vinh
 --
 
 CREATE TABLE public.pull_requests (
@@ -177,8 +242,10 @@ CREATE TABLE public.pull_requests (
 );
 
 
+ALTER TABLE public.pull_requests OWNER TO vinh;
+
 --
--- Name: pull_requests_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: pull_requests_id_seq; Type: SEQUENCE; Schema: public; Owner: vinh
 --
 
 CREATE SEQUENCE public.pull_requests_id_seq
@@ -189,15 +256,17 @@ CREATE SEQUENCE public.pull_requests_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.pull_requests_id_seq OWNER TO vinh;
+
 --
--- Name: pull_requests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: pull_requests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vinh
 --
 
 ALTER SEQUENCE public.pull_requests_id_seq OWNED BY public.pull_requests.id;
 
 
 --
--- Name: repositories; Type: TABLE; Schema: public; Owner: -
+-- Name: repositories; Type: TABLE; Schema: public; Owner: vinh
 --
 
 CREATE TABLE public.repositories (
@@ -211,8 +280,10 @@ CREATE TABLE public.repositories (
 );
 
 
+ALTER TABLE public.repositories OWNER TO vinh;
+
 --
--- Name: repositories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: repositories_id_seq; Type: SEQUENCE; Schema: public; Owner: vinh
 --
 
 CREATE SEQUENCE public.repositories_id_seq
@@ -223,15 +294,17 @@ CREATE SEQUENCE public.repositories_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.repositories_id_seq OWNER TO vinh;
+
 --
--- Name: repositories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: repositories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vinh
 --
 
 ALTER SEQUENCE public.repositories_id_seq OWNED BY public.repositories.id;
 
 
 --
--- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: vinh
 --
 
 CREATE TABLE public.schema_migrations (
@@ -239,8 +312,10 @@ CREATE TABLE public.schema_migrations (
 );
 
 
+ALTER TABLE public.schema_migrations OWNER TO vinh;
+
 --
--- Name: sync_logs; Type: TABLE; Schema: public; Owner: -
+-- Name: sync_logs; Type: TABLE; Schema: public; Owner: vinh
 --
 
 CREATE TABLE public.sync_logs (
@@ -254,12 +329,15 @@ CREATE TABLE public.sync_logs (
     items_created integer DEFAULT 0,
     items_updated integer DEFAULT 0,
     error_message text,
-    created_at timestamp(6) without time zone NOT NULL
+    created_at timestamp(6) without time zone NOT NULL,
+    failed_items jsonb DEFAULT '"[]"'::jsonb NOT NULL
 );
 
 
+ALTER TABLE public.sync_logs OWNER TO vinh;
+
 --
--- Name: sync_logs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: sync_logs_id_seq; Type: SEQUENCE; Schema: public; Owner: vinh
 --
 
 CREATE SEQUENCE public.sync_logs_id_seq
@@ -270,57 +348,66 @@ CREATE SEQUENCE public.sync_logs_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.sync_logs_id_seq OWNER TO vinh;
+
 --
--- Name: sync_logs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: sync_logs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vinh
 --
 
 ALTER SEQUENCE public.sync_logs_id_seq OWNED BY public.sync_logs.id;
 
 
 --
--- Name: chunks id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: chunks id; Type: DEFAULT; Schema: public; Owner: vinh
 --
 
 ALTER TABLE ONLY public.chunks ALTER COLUMN id SET DEFAULT nextval('public.chunks_id_seq'::regclass);
 
 
 --
--- Name: github_projects id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: comments id; Type: DEFAULT; Schema: public; Owner: vinh
+--
+
+ALTER TABLE ONLY public.comments ALTER COLUMN id SET DEFAULT nextval('public.comments_id_seq'::regclass);
+
+
+--
+-- Name: github_projects id; Type: DEFAULT; Schema: public; Owner: vinh
 --
 
 ALTER TABLE ONLY public.github_projects ALTER COLUMN id SET DEFAULT nextval('public.github_projects_id_seq'::regclass);
 
 
 --
--- Name: issues id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: issues id; Type: DEFAULT; Schema: public; Owner: vinh
 --
 
 ALTER TABLE ONLY public.issues ALTER COLUMN id SET DEFAULT nextval('public.issues_id_seq'::regclass);
 
 
 --
--- Name: pull_requests id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: pull_requests id; Type: DEFAULT; Schema: public; Owner: vinh
 --
 
 ALTER TABLE ONLY public.pull_requests ALTER COLUMN id SET DEFAULT nextval('public.pull_requests_id_seq'::regclass);
 
 
 --
--- Name: repositories id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: repositories id; Type: DEFAULT; Schema: public; Owner: vinh
 --
 
 ALTER TABLE ONLY public.repositories ALTER COLUMN id SET DEFAULT nextval('public.repositories_id_seq'::regclass);
 
 
 --
--- Name: sync_logs id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: sync_logs id; Type: DEFAULT; Schema: public; Owner: vinh
 --
 
 ALTER TABLE ONLY public.sync_logs ALTER COLUMN id SET DEFAULT nextval('public.sync_logs_id_seq'::regclass);
 
 
 --
--- Name: ar_internal_metadata ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: ar_internal_metadata ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: vinh
 --
 
 ALTER TABLE ONLY public.ar_internal_metadata
@@ -328,7 +415,7 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 
 --
--- Name: chunks chunks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: chunks chunks_pkey; Type: CONSTRAINT; Schema: public; Owner: vinh
 --
 
 ALTER TABLE ONLY public.chunks
@@ -336,7 +423,15 @@ ALTER TABLE ONLY public.chunks
 
 
 --
--- Name: github_projects github_projects_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: comments comments_pkey; Type: CONSTRAINT; Schema: public; Owner: vinh
+--
+
+ALTER TABLE ONLY public.comments
+    ADD CONSTRAINT comments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: github_projects github_projects_pkey; Type: CONSTRAINT; Schema: public; Owner: vinh
 --
 
 ALTER TABLE ONLY public.github_projects
@@ -344,7 +439,7 @@ ALTER TABLE ONLY public.github_projects
 
 
 --
--- Name: issues issues_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: issues issues_pkey; Type: CONSTRAINT; Schema: public; Owner: vinh
 --
 
 ALTER TABLE ONLY public.issues
@@ -352,7 +447,7 @@ ALTER TABLE ONLY public.issues
 
 
 --
--- Name: pull_requests pull_requests_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: pull_requests pull_requests_pkey; Type: CONSTRAINT; Schema: public; Owner: vinh
 --
 
 ALTER TABLE ONLY public.pull_requests
@@ -360,7 +455,7 @@ ALTER TABLE ONLY public.pull_requests
 
 
 --
--- Name: repositories repositories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: repositories repositories_pkey; Type: CONSTRAINT; Schema: public; Owner: vinh
 --
 
 ALTER TABLE ONLY public.repositories
@@ -368,7 +463,7 @@ ALTER TABLE ONLY public.repositories
 
 
 --
--- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: vinh
 --
 
 ALTER TABLE ONLY public.schema_migrations
@@ -376,7 +471,7 @@ ALTER TABLE ONLY public.schema_migrations
 
 
 --
--- Name: sync_logs sync_logs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: sync_logs sync_logs_pkey; Type: CONSTRAINT; Schema: public; Owner: vinh
 --
 
 ALTER TABLE ONLY public.sync_logs
@@ -384,126 +479,140 @@ ALTER TABLE ONLY public.sync_logs
 
 
 --
--- Name: index_chunks_on_chunkable_type_and_chunkable_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_chunks_on_chunkable_type_and_chunkable_id; Type: INDEX; Schema: public; Owner: vinh
 --
 
 CREATE INDEX index_chunks_on_chunkable_type_and_chunkable_id ON public.chunks USING btree (chunkable_type, chunkable_id);
 
 
 --
--- Name: index_chunks_on_parent_and_source; Type: INDEX; Schema: public; Owner: -
+-- Name: index_chunks_on_parent_and_source; Type: INDEX; Schema: public; Owner: vinh
 --
 
 CREATE UNIQUE INDEX index_chunks_on_parent_and_source ON public.chunks USING btree (chunkable_type, chunkable_id, chunk_type, source_github_id);
 
 
 --
--- Name: index_chunks_on_project; Type: INDEX; Schema: public; Owner: -
+-- Name: index_chunks_on_project; Type: INDEX; Schema: public; Owner: vinh
 --
 
 CREATE INDEX index_chunks_on_project ON public.chunks USING btree (project);
 
 
 --
--- Name: index_chunks_on_repository; Type: INDEX; Schema: public; Owner: -
+-- Name: index_chunks_on_repository; Type: INDEX; Schema: public; Owner: vinh
 --
 
 CREATE INDEX index_chunks_on_repository ON public.chunks USING btree (repository);
 
 
 --
--- Name: index_chunks_on_search_vector; Type: INDEX; Schema: public; Owner: -
+-- Name: index_chunks_on_search_vector; Type: INDEX; Schema: public; Owner: vinh
 --
 
 CREATE INDEX index_chunks_on_search_vector ON public.chunks USING gin (search_vector);
 
 
 --
--- Name: index_github_projects_on_github_node_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_comments_on_commentable_type_and_commentable_id; Type: INDEX; Schema: public; Owner: vinh
+--
+
+CREATE INDEX index_comments_on_commentable_type_and_commentable_id ON public.comments USING btree (commentable_type, commentable_id);
+
+
+--
+-- Name: index_comments_on_github_id; Type: INDEX; Schema: public; Owner: vinh
+--
+
+CREATE UNIQUE INDEX index_comments_on_github_id ON public.comments USING btree (github_id);
+
+
+--
+-- Name: index_github_projects_on_github_node_id; Type: INDEX; Schema: public; Owner: vinh
 --
 
 CREATE UNIQUE INDEX index_github_projects_on_github_node_id ON public.github_projects USING btree (github_node_id);
 
 
 --
--- Name: index_issues_on_github_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_issues_on_github_id; Type: INDEX; Schema: public; Owner: vinh
 --
 
 CREATE UNIQUE INDEX index_issues_on_github_id ON public.issues USING btree (github_id);
 
 
 --
--- Name: index_issues_on_github_project_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_issues_on_github_project_id; Type: INDEX; Schema: public; Owner: vinh
 --
 
 CREATE INDEX index_issues_on_github_project_id ON public.issues USING btree (github_project_id);
 
 
 --
--- Name: index_issues_on_github_project_id_and_number; Type: INDEX; Schema: public; Owner: -
+-- Name: index_issues_on_github_project_id_and_number; Type: INDEX; Schema: public; Owner: vinh
 --
 
 CREATE UNIQUE INDEX index_issues_on_github_project_id_and_number ON public.issues USING btree (github_project_id, number);
 
 
 --
--- Name: index_issues_on_github_updated_at; Type: INDEX; Schema: public; Owner: -
+-- Name: index_issues_on_github_updated_at; Type: INDEX; Schema: public; Owner: vinh
 --
 
 CREATE INDEX index_issues_on_github_updated_at ON public.issues USING btree (github_updated_at);
 
 
 --
--- Name: index_pull_requests_on_github_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_pull_requests_on_github_id; Type: INDEX; Schema: public; Owner: vinh
 --
 
 CREATE UNIQUE INDEX index_pull_requests_on_github_id ON public.pull_requests USING btree (github_id);
 
 
 --
--- Name: index_pull_requests_on_github_updated_at; Type: INDEX; Schema: public; Owner: -
+-- Name: index_pull_requests_on_github_updated_at; Type: INDEX; Schema: public; Owner: vinh
 --
 
 CREATE INDEX index_pull_requests_on_github_updated_at ON public.pull_requests USING btree (github_updated_at);
 
 
 --
--- Name: index_pull_requests_on_repository_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_pull_requests_on_repository_id; Type: INDEX; Schema: public; Owner: vinh
 --
 
 CREATE INDEX index_pull_requests_on_repository_id ON public.pull_requests USING btree (repository_id);
 
 
 --
--- Name: index_pull_requests_on_repository_id_and_number; Type: INDEX; Schema: public; Owner: -
+-- Name: index_pull_requests_on_repository_id_and_number; Type: INDEX; Schema: public; Owner: vinh
 --
 
 CREATE UNIQUE INDEX index_pull_requests_on_repository_id_and_number ON public.pull_requests USING btree (repository_id, number);
 
 
 --
--- Name: index_repositories_on_full_name; Type: INDEX; Schema: public; Owner: -
+-- Name: index_repositories_on_full_name; Type: INDEX; Schema: public; Owner: vinh
 --
 
 CREATE UNIQUE INDEX index_repositories_on_full_name ON public.repositories USING btree (full_name);
 
 
 --
--- Name: index_repositories_on_github_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_repositories_on_github_id; Type: INDEX; Schema: public; Owner: vinh
 --
 
 CREATE UNIQUE INDEX index_repositories_on_github_id ON public.repositories USING btree (github_id);
 
 
 --
--- Name: index_sync_logs_on_syncable_type_and_syncable_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_sync_logs_on_syncable_type_and_syncable_id; Type: INDEX; Schema: public; Owner: vinh
 --
 
 CREATE INDEX index_sync_logs_on_syncable_type_and_syncable_id ON public.sync_logs USING btree (syncable_type, syncable_id);
 
 
 --
--- Name: issues fk_rails_5e157d96c7; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: issues fk_rails_5e157d96c7; Type: FK CONSTRAINT; Schema: public; Owner: vinh
 --
 
 ALTER TABLE ONLY public.issues
@@ -511,7 +620,7 @@ ALTER TABLE ONLY public.issues
 
 
 --
--- Name: pull_requests fk_rails_8fa503b550; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: pull_requests fk_rails_8fa503b550; Type: FK CONSTRAINT; Schema: public; Owner: vinh
 --
 
 ALTER TABLE ONLY public.pull_requests
@@ -525,6 +634,8 @@ ALTER TABLE ONLY public.pull_requests
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260729142620'),
+('20260729142618'),
 ('20260728160244'),
 ('20260728154051'),
 ('20260728152317'),

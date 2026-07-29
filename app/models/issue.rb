@@ -1,6 +1,7 @@
 class Issue < ApplicationRecord
   belongs_to :github_project
   has_many :chunks, as: :chunkable, dependent: :destroy
+  has_many :comments, as: :commentable, dependent: :destroy
 
   validates :number, presence: true, uniqueness: { scope: :github_project_id }
   validates :github_id, presence: true, uniqueness: true

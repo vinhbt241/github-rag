@@ -11,6 +11,7 @@ RSpec.describe SyncLog, type: :model do
     it { is_expected.to have_db_column(:items_created).of_type(:integer).with_options(default: 0) }
     it { is_expected.to have_db_column(:items_updated).of_type(:integer).with_options(default: 0) }
     it { is_expected.to have_db_column(:error_message).of_type(:text).with_options(null: true) }
+    it { is_expected.to have_db_column(:failed_items).of_type(:jsonb).with_options(default: []) }
     it { is_expected.to have_db_column(:created_at).of_type(:datetime).with_options(null: false) }
     it { is_expected.not_to have_db_column(:updated_at) }
   end
@@ -148,6 +149,16 @@ RSpec.describe SyncLog, type: :model do
       expect(log.items_fetched).to eq(0)
       expect(log.items_created).to eq(0)
       expect(log.items_updated).to eq(0)
+    end
+
+    it 'defaults failed_items to empty array' do
+      log = create(:sync_log)
+      expect(log.failed_items).to eq([])
+    end
+
+    it 'accepts an array of failure objects' do
+      log = build(:sync_log, failed_items: [{ type: 'Issue', number: 42, error: 'timeout' }])
+      expect(log).to be_valid
     end
   end
 end
