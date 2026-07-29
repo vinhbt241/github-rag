@@ -1,6 +1,7 @@
 class Comment < ApplicationRecord
   belongs_to :commentable, polymorphic: true
 
+  validates :commentable_type, presence: true, inclusion: { in: %w[Issue PullRequest] }
   validates :github_id, presence: true, uniqueness: true
   validates :body, presence: true
   validates :author, presence: true

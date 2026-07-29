@@ -46,6 +46,14 @@ RSpec.describe Comment, type: :model do
     it { is_expected.to validate_presence_of(:github_created_at) }
     it { is_expected.to validate_presence_of(:github_updated_at) }
 
+    it { is_expected.to validate_presence_of(:commentable_type) }
+
+    it 'validates inclusion of commentable_type in Issue and PullRequest' do
+      comment = build(:comment, commentable_type: 'Repository')
+      expect(comment).not_to be_valid
+      expect(comment.errors[:commentable_type]).to include('is not included in the list')
+    end
+
     it 'validates inclusion of comment_type in issue_comment and review_comment' do
       comment = build(:comment, comment_type: 'invalid')
       expect(comment).not_to be_valid
@@ -130,6 +138,31 @@ RSpec.describe Comment, type: :model do
     it 'rejects comment without github_updated_at' do
       comment = build(:comment, github_updated_at: nil)
       expect(comment).not_to be_valid
+    end
+
+    it 'accepts Issue as commentable_type' do
+      issue = create(:issue)
+      comment = create(:comment, :issue_comment, commentable: issue, commentable_type: 'Issue')
+      expect(comment).to be_valid
+      expect(comment.commentable_type).to eq('Issue')
+    end
+
+    it 'accepts PullRequest as commentable_type' do
+      pr = create(:pull_request)
+      comment = create(:comment, :review_comment, commentable: pr, commentable_type: 'PullRequest')
+      expect(comment).to be_valid
+      expect(comment.commentable_type).to eq('PullRequest')
+    end
+
+    it 'rejects Repository as commentable_type' do
+      repo = create(:repository)
+      comment = Comment.new(
+        commentable: repo,
+        github_id: 999_999, body: 'test', author: 'test', url: 'https://example.com',
+        comment_type: 'issue_comment', github_created_at: Time.current, github_updated_at: Time.current
+      )
+      expect(comment).not_to be_valid
+      expect(comment.errors[:commentable_type]).to include('is not included in the list')
     end
   end
 end

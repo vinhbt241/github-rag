@@ -47,7 +47,6 @@ CREATE TABLE public.ar_internal_metadata (
 );
 
 
-ALTER TABLE public.ar_internal_metadata OWNER TO vinh;
 
 --
 -- Name: chunks; Type: TABLE; Schema: public; Owner: vinh
@@ -73,7 +72,6 @@ CREATE TABLE public.chunks (
 );
 
 
-ALTER TABLE public.chunks OWNER TO vinh;
 
 --
 -- Name: chunks_id_seq; Type: SEQUENCE; Schema: public; Owner: vinh
@@ -87,7 +85,6 @@ CREATE SEQUENCE public.chunks_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.chunks_id_seq OWNER TO vinh;
 
 --
 -- Name: chunks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vinh
@@ -116,7 +113,6 @@ CREATE TABLE public.comments (
 );
 
 
-ALTER TABLE public.comments OWNER TO vinh;
 
 --
 -- Name: comments_id_seq; Type: SEQUENCE; Schema: public; Owner: vinh
@@ -130,7 +126,6 @@ CREATE SEQUENCE public.comments_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.comments_id_seq OWNER TO vinh;
 
 --
 -- Name: comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vinh
@@ -155,7 +150,6 @@ CREATE TABLE public.github_projects (
 );
 
 
-ALTER TABLE public.github_projects OWNER TO vinh;
 
 --
 -- Name: github_projects_id_seq; Type: SEQUENCE; Schema: public; Owner: vinh
@@ -169,7 +163,6 @@ CREATE SEQUENCE public.github_projects_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.github_projects_id_seq OWNER TO vinh;
 
 --
 -- Name: github_projects_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vinh
@@ -198,7 +191,6 @@ CREATE TABLE public.issues (
 );
 
 
-ALTER TABLE public.issues OWNER TO vinh;
 
 --
 -- Name: issues_id_seq; Type: SEQUENCE; Schema: public; Owner: vinh
@@ -212,7 +204,6 @@ CREATE SEQUENCE public.issues_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.issues_id_seq OWNER TO vinh;
 
 --
 -- Name: issues_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vinh
@@ -242,7 +233,6 @@ CREATE TABLE public.pull_requests (
 );
 
 
-ALTER TABLE public.pull_requests OWNER TO vinh;
 
 --
 -- Name: pull_requests_id_seq; Type: SEQUENCE; Schema: public; Owner: vinh
@@ -256,7 +246,6 @@ CREATE SEQUENCE public.pull_requests_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.pull_requests_id_seq OWNER TO vinh;
 
 --
 -- Name: pull_requests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vinh
@@ -280,7 +269,6 @@ CREATE TABLE public.repositories (
 );
 
 
-ALTER TABLE public.repositories OWNER TO vinh;
 
 --
 -- Name: repositories_id_seq; Type: SEQUENCE; Schema: public; Owner: vinh
@@ -294,7 +282,6 @@ CREATE SEQUENCE public.repositories_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.repositories_id_seq OWNER TO vinh;
 
 --
 -- Name: repositories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vinh
@@ -312,7 +299,6 @@ CREATE TABLE public.schema_migrations (
 );
 
 
-ALTER TABLE public.schema_migrations OWNER TO vinh;
 
 --
 -- Name: sync_logs; Type: TABLE; Schema: public; Owner: vinh
@@ -330,11 +316,10 @@ CREATE TABLE public.sync_logs (
     items_updated integer DEFAULT 0,
     error_message text,
     created_at timestamp(6) without time zone NOT NULL,
-    failed_items jsonb DEFAULT '"[]"'::jsonb NOT NULL
+    failed_items jsonb DEFAULT '[]'::jsonb NOT NULL
 );
 
 
-ALTER TABLE public.sync_logs OWNER TO vinh;
 
 --
 -- Name: sync_logs_id_seq; Type: SEQUENCE; Schema: public; Owner: vinh
@@ -348,7 +333,6 @@ CREATE SEQUENCE public.sync_logs_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.sync_logs_id_seq OWNER TO vinh;
 
 --
 -- Name: sync_logs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vinh
@@ -514,6 +498,13 @@ CREATE INDEX index_chunks_on_search_vector ON public.chunks USING gin (search_ve
 
 
 --
+-- Name: index_comments_on_commentable; Type: INDEX; Schema: public; Owner: vinh
+--
+
+CREATE INDEX index_comments_on_commentable ON public.comments USING btree (commentable_type, commentable_id);
+
+
+--
 -- Name: index_comments_on_commentable_type_and_commentable_id; Type: INDEX; Schema: public; Owner: vinh
 --
 
@@ -631,6 +622,8 @@ ALTER TABLE ONLY public.pull_requests
 -- PostgreSQL database dump complete
 --
 
+
+
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
@@ -642,4 +635,3 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20260728104557'),
 ('20260728103204'),
 ('20260728100655');
-

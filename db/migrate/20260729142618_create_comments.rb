@@ -14,6 +14,5 @@ class CreateComments < ActiveRecord::Migration[8.1]
     end
 
     add_index :comments, :github_id, unique: true
-    add_index :comments, [:commentable_type, :commentable_id]
   end
 end
