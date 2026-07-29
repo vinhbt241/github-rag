@@ -16,6 +16,8 @@ The user provides one of the following:
 - **GitHub issue URL** (e.g. `https://github.com/owner/repo/issues/42`) → extract issue number, branch name: `feat/issue-42-<short-description>`
 - **Custom branch name** (e.g. `feat/issue-42-add-search-endpoint`) → use as-is. If the branch name contains no issue number, use `chore/<branch-suffix>` for the commit prefix and PR title, omit `Closes #...` metadata, and derive the short description from the branch name itself.
 
+**Branch name validation:** Before using any branch name in shell commands, validate it contains only safe Git-ref characters (`[a-zA-Z0-9/_\-.]`). Reject names containing shell metacharacters such as `$`, `` ` ``, `(`, `)`, `;`, `|`, `&`, `<`, `>`, `!`, `\`, spaces, or null bytes. Quote every branch name and derived worktree path expansion in all shell commands (e.g., `"$BRANCH_NAME"`, `"$WORKTREE_PATH"`).
+
 ## Process
 
 ### Phase 1: Set Up Worktree
@@ -120,10 +122,17 @@ The user provides one of the following:
 
     ```bash
     PR_BODY_FILE=$(mktemp)
-    # Write the filled PR template to "$PR_BODY_FILE"
+    cat > "$PR_BODY_FILE" << 'PRBODY'
+    <filled PR template content here>
+    PRBODY
+    if [ ! -s "$PR_BODY_FILE" ]; then
+      echo "Error: PR body file is empty. Aborting PR creation."
+      rm -f "$PR_BODY_FILE"
+      exit 1
+    fi
     gh pr create \
       --base main \
-      --head <branch-name> \
+      --head "<branch-name>" \
       --title "<type>/Issue-<issue_number> - <short description>" \
       --body-file "$PR_BODY_FILE"
     rm -f "$PR_BODY_FILE"
