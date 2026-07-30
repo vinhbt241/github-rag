@@ -56,6 +56,7 @@ RSpec.describe Issue, type: :model do
   describe 'associations' do
     it { is_expected.to belong_to(:github_project) }
     it { is_expected.to have_many(:chunks).dependent(:destroy) }
+    it { is_expected.to have_many(:comments).dependent(:destroy) }
   end
 
   describe 'edge cases' do

@@ -8,6 +8,7 @@ FactoryBot.define do
     items_created { 0 }
     items_updated { 0 }
     error_message { nil }
+    failed_items { [] }
 
     trait :for_github_project do
       association :syncable, factory: :github_project
