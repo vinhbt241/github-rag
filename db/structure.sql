@@ -481,13 +481,6 @@ CREATE INDEX index_comments_on_commentable ON public.comments USING btree (comme
 
 
 --
--- Name: index_comments_on_commentable_type_and_commentable_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_comments_on_commentable_type_and_commentable_id ON public.comments USING btree (commentable_type, commentable_id);
-
-
---
 -- Name: index_comments_on_github_id; Type: INDEX; Schema: public; Owner: -
 --
 
